@@ -3,6 +3,8 @@ const fs = require('fs')
 const unzip = require('unzip')
 const moment = require('moment')
 
+require('dotenv').config()
+
 const Slack = require('slack-node')
 const slack = new Slack()
 
@@ -16,7 +18,7 @@ async function extractCsvFromZip() {
 
 const yesterday = moment().subtract(1, 'days').startOf('day')
 
-let message = `Shopify uninstall reasons for ${yesterday.format('D MMM YYYY')}`
+let message = ''
 
 async function parseAttachment () {
   // await extractCsvFromZip()
@@ -34,18 +36,33 @@ async function parseAttachment () {
       if (event_date < yesterday) return
 
       if (data.event == 'Uninstalled' && data.details != '-') {
-        message = message + '\n' + `<https://${data.shop_domain}|${data.shop_name}> ${data.details}`
+        message = message + '\n' + `<https://${data.shop_domain}|${data.shop_name}> ${data.details.replace('Uninstall reason: ', '')}`
       }
     })
     .on('end', () => {
       slack.webhook({
-        channel: "#product-feed",
-        username: "ShopifyUninstallReason",
-        text: message
+        channel: "#engineering-feed",
+        username: 'RCShopifyBot',
+        icon_emoji: ':ghost:',
+        text: '',
+        attachments: [
+          {
+            "fallback": message,
+            "fields": [
+              {
+                "title": `Shopify uninstall reasons for ${yesterday.format('D MMM YYYY')}`,
+                "value": message
+              }
+            ]
+          }
+        ]
       }, function (err, response) {
-        console.log(response)
         console.log(message)
-        console.log(err)
+        if (err) {
+          console.log(err)
+        } else {
+          console.log(response)
+        }
       })
     })
 }
