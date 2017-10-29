@@ -4,7 +4,11 @@
   "description": "scrap shopfify for uninstall reasons",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js && node email.js && node parse.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=8.8.1"
   },
   "author": "",
   "license": "ISC",

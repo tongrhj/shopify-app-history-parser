@@ -2,3 +2,4 @@ attachments/*.zip
 node_modules/*
 output/*.csv
 .env
+*.log

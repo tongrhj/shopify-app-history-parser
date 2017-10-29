@@ -2,7 +2,7 @@
 Get hard-to-extract information from Shopify programmatically and send to Slack
 
 ## mail-listener2's mailparser is broken!
-Until we fork it, need to manually go in and fix it. Right now mailparser installs an open ended version of mime, which has updated with breaking changes. So either install the old version of mime (@1.0.0) or change the code in mail-listener2 to reflect the new function names (s/mime.extension/mime.getExtension, s/mime.lookup/mime.getType). See mime repo for more info.
+Until we fork it, need to manually go in and fix it. Right now mailparser installs an open ended version of mime, which has updated with breaking changes. So either install the old version of mime (@1.0.0) or change the code in mail-listener2 to reflect the new function names (s/mime.extension/mime.getExtension, s/mime.lookup/mime.getType). See [node-mime repo](https://github.com/broofa/node-mime) for more info.
 
 ## Use
 ```
