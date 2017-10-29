@@ -11,19 +11,15 @@ const slack = new Slack()
 const WEBHOOK_URI = process.env.WEBHOOK_URI
 slack.setWebhook(WEBHOOK_URI)
 
-async function extractCsvFromZip() {
-  fs.createReadStream('./attachments/shopify-referralcandy-app-history-2017-10-27.zip')
-    .pipe(unzip.Extract({ path: 'output' }))
-}
+const YYYY_MM_DD = moment().format('YYYY-MM-DD')
+const FILE_NAME = `shopify-referralcandy-app-history-${YYYY_MM_DD}`
 
 const yesterday = moment().subtract(1, 'days').startOf('day')
 
 let message = ''
 
-async function parseAttachment () {
-  // await extractCsvFromZip()
-
-  fs.createReadStream('output/shopify-referralcandy-app-history-2017-10-27.csv')
+function parseCSVandPostToSlack () {
+  fs.createReadStream(`output/${FILE_NAME}.csv`)
     .pipe(csv({
       headers: [
         'date', 'event', 'details', 'billing_on', 'shop_name',
@@ -40,6 +36,7 @@ async function parseAttachment () {
       }
     })
     .on('end', () => {
+      console.log('Posting to Slack!')
       slack.webhook({
         channel: "#engineering-feed",
         username: 'RCShopifyBot',
@@ -64,6 +61,15 @@ async function parseAttachment () {
           console.log(response)
         }
       })
+    })
+}
+
+async function parseAttachment() {
+  fs.createReadStream(`./attachments/${FILE_NAME}.zip`)
+    .pipe(unzip.Extract({ path: 'output' }))
+    .on('finish', () => {
+      console.log('Unzipped!')
+      parseCSVandPostToSlack()
     })
 }
 
