@@ -29,3 +29,16 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: npm run start
+
+workflows:
+  version: 2
+  daily:
+    jobs:
+      - build
+    triggers:
+      - schedule:
+         cron: "48 11 * * *"
+         filters:
+            branches:
+              only:
+                - master
