@@ -9,7 +9,8 @@ async function requestForEmail () {
   await page.goto('https://partners.shopify.com/organizations')
   const EMAIL_ADDRESS_INPUT_SELECTOR = '#account_email'
   const PASSWORD_INPUT_SELECTOR = '#account_password'
-  const SUBMIT_BUTTON_SELECTOR = '#login_form > button'
+  const SUBMIT_EMAIL_BUTTON = 'button.ui-button:nth-child(5)'
+  const SUBMIT_PASSWORD_SELECTOR = '.ui-button'
 
   const CREDENTIALS = {
     username: process.env.SHOPIFY_USERNAME,
@@ -19,24 +20,25 @@ async function requestForEmail () {
   // LOGIN
   await page.click(EMAIL_ADDRESS_INPUT_SELECTOR)
   await page.keyboard.type(CREDENTIALS.username)
+  await page.click(SUBMIT_EMAIL_BUTTON)
+  await page.waitForNavigation()
 
   await page.click(PASSWORD_INPUT_SELECTOR)
   await page.keyboard.type(CREDENTIALS.password)
-
-  await page.click(SUBMIT_BUTTON_SELECTOR)
-
+  await page.click(SUBMIT_PASSWORD_SELECTOR)
   await page.waitForNavigation()
 
-  // NAVIGATE TO UNINSTALL REASON LINK
   const RC_APP_URL = process.env.RC_APP_URL
   await page.goto(RC_APP_URL)
+  await page.waitFor(5000);
 
-  const EXPORT_HISTORY_SELECTOR = '#AppHistory > header > div > div:nth-child(2) > div > div:nth-child(2) > a'
+  const EXPORT_DROPDOWN = 'span.action-bar__link > div:nth-child(1)'
+  await page.click(EXPORT_DROPDOWN)
+  await page.waitFor(2000);
 
-  await page.click(EXPORT_HISTORY_SELECTOR)
-
-  await page.waitFor(1 * 1000) // Time for request to be queued
-
+  const EXPORT_HISTORY = "div.action-bar__popover-wrapper > div:nth-child(1) > ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)"
+  await page.click(EXPORT_HISTORY) // Triggers a reload of page
+  await page.waitForNavigation()
   browser.close()
 }
 

@@ -14,7 +14,7 @@ slack.setWebhook(WEBHOOK_URI)
 const YYYY_MM_DD = moment().format('YYYY-MM-DD')
 const FILE_NAME = `shopify-referralcandy-app-history-${YYYY_MM_DD}`
 
-const yesterday = moment().subtract(1, 'days').startOf('day')
+const yesterday = moment().subtract(24, 'hours')
 
 let message = ''
 
@@ -27,27 +27,36 @@ function parseCSVandPostToSlack () {
       ]
     }))
     .on('data', (data) => {
-      const event_date = moment(data.date, 'YYYY-MM-DD HH:mm:ss')
+      const event_date = moment.utc(data.date, 'YYYY-MM-DD HH:mm:ss')
 
-      if (event_date < yesterday) return
+      if (event_date < yesterday) {
+        return null
+      }
 
-      if (data.event == 'Uninstalled' && data.details != '-') {
-        message = message + '\n' + `<https://${data.shop_domain}|${data.shop_name}> ${data.details.replace('Uninstall reason: ', '')}`
+      if (data.event === 'Uninstalled' && data.details && data.details !== '-') {
+        const uninstallReason = data.details.replace('Uninstall reason: ', '')
+
+        // Exclude unhelpful messages
+        if (uninstallReason === 'Other') {
+          return null
+        } else {
+          message = message + '\n' + `<https://${data.shop_domain}|${data.shop_name}> ${uninstallReason}`
+        }
       }
     })
     .on('end', () => {
       console.log('Posting to Slack!')
       slack.webhook({
-        channel: "#engineering-feed",
-        username: 'RCShopifyBot',
-        icon_emoji: ':ghost:',
+        channel: "#product-feed",
+        username: 'Shopify Uninstall Reasons',
+        icon_emoji: ':put_litter_in_its_place:',
         text: '',
         attachments: [
           {
             "fallback": message,
             "fields": [
               {
-                "title": `Shopify uninstall reasons for ${yesterday.format('D MMM YYYY')}`,
+                "title": `${yesterday.format('D')} - ${moment().format('D MMM YYYY')}`,
                 "value": message
               }
             ]

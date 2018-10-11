@@ -1,4 +1,4 @@
-const MailListener = require("mail-listener2")
+const MailListener = require("mail-listener2-updated")
 
 require('dotenv').config()
 
