@@ -2,11 +2,48 @@ const puppeteer = require('puppeteer')
 
 require('dotenv').config()
 
-async function requestForEmail () {
-  const browser = await puppeteer.launch()
+const requestForEmail = async function () {
+  const browser = await puppeteer.launch({
+    headless: false,
+    args: ['--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36']
+  })
   const page = await browser.newPage()
 
+  page.once('load', () => console.log('Page loaded!'));
   await page.goto('https://partners.shopify.com/organizations')
+
+  // Make Pupeteer less detectable
+  await page.evaluate(() => {
+    // overwrite the `languages` property to use a custom getter
+    Object.defineProperty(navigator, 'languages', {
+      get: function() {
+        return ['en-US', 'en'];
+      },
+    });
+
+    // overwrite the `plugins` property to use a custom getter
+    Object.defineProperty(navigator, 'plugins', {
+      get: function() {
+        // this just needs to have `length > 0`, but we could mock the plugins too
+        return [1, 2, 3, 4, 5];
+      },
+    });
+
+    const getParameter = WebGLRenderingContext.getParameter;
+    WebGLRenderingContext.prototype.getParameter = function(parameter) {
+      // UNMASKED_VENDOR_WEBGL
+      if (parameter === 37445) {
+        return 'Intel Open Source Technology Center';
+      }
+      // UNMASKED_RENDERER_WEBGL
+      if (parameter === 37446) {
+        return 'Mesa DRI Intel(R) Ivybridge Mobile ';
+      }
+
+      return getParameter(parameter);
+    };
+  })
+
   const EMAIL_ADDRESS_INPUT_SELECTOR = '#account_email'
   const PASSWORD_INPUT_SELECTOR = '#account_password'
   const SUBMIT_EMAIL_BUTTON = 'button.ui-button:nth-child(5)'

@@ -12,7 +12,6 @@ async function downloadEmailAttachment () {
     tls: true,
     connTimeout: 10000, // Default by node-imap
     authTimeout: 5000, // Default by node-imap,
-    debug: console.log, // Or your custom function with only one incoming argument. Default: null
     tlsOptions: { rejectUnauthorized: false },
     mailbox: process.env.EMAIL_MAILBOX, // mailbox to monitor
     searchFilter: ['UNSEEN'], // the search filter being used after an IDLE notification has been retrieved
