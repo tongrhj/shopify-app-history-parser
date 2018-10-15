@@ -47,9 +47,7 @@ function parseCSVandPostToSlack () {
     .on('end', () => {
       console.log('Posting to Slack!')
       slack.webhook({
-        channel: "#product-feed",
         username: 'Shopify Uninstall Reasons',
-        icon_emoji: ':put_litter_in_its_place:',
         text: '',
         attachments: [
           {
