@@ -55,7 +55,7 @@ function parseCSVandPostToSlack () {
             "fields": [
               {
                 "title": `${yesterday.format('D')} - ${moment().format('D MMM YYYY')}`,
-                "value": message
+                "value": message.length ? message : `No reasons given, just like your last relationship. It's time to move on`
               }
             ]
           }
