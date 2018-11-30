@@ -12,7 +12,7 @@ const requestForEmail = async function () {
   page.once('load', () => console.log('Page loaded!'));
   await page.goto('https://partners.shopify.com/organizations')
 
-  // Make Pupeteer less detectable
+  // Make Pupeteer less detectable to avoid triggering Shopify's recaptcha
   await page.evaluate(() => {
     // overwrite the `languages` property to use a custom getter
     Object.defineProperty(navigator, 'languages', {
@@ -69,11 +69,11 @@ const requestForEmail = async function () {
   await page.goto(RC_APP_URL)
   await page.waitFor(5000);
 
-  const EXPORT_DROPDOWN = 'span.action-bar__link > div:nth-child(1)'
+  const EXPORT_DROPDOWN = '.app-analytics__header > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)'
   await page.click(EXPORT_DROPDOWN)
   await page.waitFor(2000);
 
-  const EXPORT_HISTORY = "div.action-bar__popover-wrapper > div:nth-child(1) > ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)"
+  const EXPORT_HISTORY = ".Polaris-ActionList__Actions > li:nth-child(3)"
   await page.click(EXPORT_HISTORY) // Triggers a reload of page
   await page.waitForNavigation()
   browser.close()
