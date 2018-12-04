@@ -38,7 +38,7 @@ async function downloadEmailAttachment () {
 
   mailListener.on("mail", function (mail, seqno, attributes) {
     // do something with mail object including attachments
-    console.log("emailParsed", mail);
+    console.log("Email Parsed!");
     // mail processing code goes here
   })
 

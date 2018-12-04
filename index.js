@@ -76,6 +76,7 @@ const requestForEmail = async function () {
   const EXPORT_HISTORY = ".Polaris-ActionList__Actions > li:nth-child(3)"
   await page.click(EXPORT_HISTORY) // Triggers a reload of page
   await page.waitForNavigation()
+  await page.close();
   await browser.close()
 }
 
