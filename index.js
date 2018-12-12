@@ -1,11 +1,11 @@
 const puppeteer = require('puppeteer')
 
-require('dotenv').config()
+require('dotenv').config({ silent: process.env.NODE_ENV === 'production' })
 
 const requestForEmail = async function () {
   const browser = await puppeteer.launch({
-    headless: false,
-    args: ['--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36']
+    headless: true,
+    args: ['--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36', '--no-sandbox', '--disable-setuid-sandbox']
   })
   const page = await browser.newPage()
 

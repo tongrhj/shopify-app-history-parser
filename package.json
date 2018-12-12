@@ -2,6 +2,7 @@
   "name": "shopify-app-history-parser",
   "version": "1.0.0",
   "description": "Export App History from Shopify, Parse, Post to Slack",
+  "repository": "github:tongrhj/shopify-app-history-parser",
   "main": "index.js",
   "scripts": {
     "start": "node index.js && node email.js && node parse.js"
