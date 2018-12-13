@@ -11,6 +11,7 @@ const requestForEmail = async function () {
 
   page.once('load', () => console.log('Page loaded!'));
   await page.goto('https://partners.shopify.com/organizations')
+  console.log('Logging in')
 
   // Make Pupeteer less detectable to avoid triggering Shopify's recaptcha
   await page.evaluate(() => {
@@ -65,19 +66,24 @@ const requestForEmail = async function () {
   await page.click(SUBMIT_PASSWORD_SELECTOR)
   await page.waitForNavigation()
 
+  console.log('Log in SUCCESS!')
+
   const RC_APP_URL = process.env.RC_APP_URL
   await page.goto(RC_APP_URL)
   await page.waitFor(5000);
 
+  console.log('Browsing to RC App Dashboard')
+
   const EXPORT_DROPDOWN = '.app-analytics__header > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)'
   await page.click(EXPORT_DROPDOWN)
   await page.waitFor(2000);
-
   const EXPORT_HISTORY = ".Polaris-ActionList__Actions > li:nth-child(3)"
   await page.click(EXPORT_HISTORY) // Triggers a reload of page
   await page.waitForNavigation()
+  console.log('Exporting History')
   await page.close();
   await browser.close()
+  console.log('Closing browser')
 }
 
 requestForEmail()
