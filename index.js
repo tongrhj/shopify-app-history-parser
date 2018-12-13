@@ -64,7 +64,9 @@ const requestForEmail = async function () {
   await page.click(PASSWORD_INPUT_SELECTOR)
   await page.keyboard.type(CREDENTIALS.password)
   await page.click(SUBMIT_PASSWORD_SELECTOR)
-  await page.waitForNavigation()
+  await page.waitForNavigation({
+      timeout: 100000
+  })
 
   console.log('Log in SUCCESS!')
 
