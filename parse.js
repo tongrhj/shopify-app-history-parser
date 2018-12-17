@@ -62,7 +62,7 @@ const handle = async () => {
                   "fields": [
                     {
                       "title": `${yesterday.format('D')} - ${moment().format('D MMM YYYY')}`,
-                      "value": message.length ? message : `No reasons given, just like your last relationship. It's time to move on`
+                      "value": message.length ? message : `No reasons given`
                     }
                   ]
                 }
