@@ -47,8 +47,8 @@ const requestForEmail = async function () {
 
   const EMAIL_ADDRESS_INPUT_SELECTOR = '#account_email'
   const PASSWORD_INPUT_SELECTOR = '#account_password'
-  const SUBMIT_EMAIL_BUTTON = 'button.ui-button:nth-child(5)'
-  const SUBMIT_PASSWORD_SELECTOR = '.ui-button'
+  const SUBMIT_EMAIL_BUTTON = 'button.ui-button:nth-child(6)'
+  const SUBMIT_PASSWORD_SELECTOR = 'button.ui-button:nth-child(6)'
 
   const CREDENTIALS = {
     username: process.env.SHOPIFY_USERNAME,
@@ -79,7 +79,7 @@ const requestForEmail = async function () {
   const EXPORT_DROPDOWN = '.app-analytics__header > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)'
   await page.click(EXPORT_DROPDOWN)
   await page.waitFor(2000);
-  const EXPORT_HISTORY = ".Polaris-ActionList__Actions > li:nth-child(3)"
+  const EXPORT_HISTORY = ".Polaris-ActionList__Actions > li:nth-child(3) > a:nth-child(1)"
   await page.click(EXPORT_HISTORY) // Triggers a reload of page
   await page.waitForNavigation()
   console.log('Exporting History')
