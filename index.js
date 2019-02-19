@@ -47,8 +47,8 @@ const requestForEmail = async function () {
 
   const EMAIL_ADDRESS_INPUT_SELECTOR = '#account_email'
   const PASSWORD_INPUT_SELECTOR = '#account_password'
-  const SUBMIT_EMAIL_BUTTON = 'button.ui-button:nth-child(6)'
-  const SUBMIT_PASSWORD_SELECTOR = 'button.ui-button:nth-child(6)'
+  const SUBMIT_EMAIL_BUTTON = 'button[type="submit"]'
+  const SUBMIT_PASSWORD_SELECTOR = 'button[type="submit"]'
 
   const CREDENTIALS = {
     username: process.env.SHOPIFY_USERNAME,
