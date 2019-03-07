@@ -76,7 +76,7 @@ const requestForEmail = async function () {
 
   console.log('Browsing to RC App Dashboard')
 
-  const EXPORT_DROPDOWN = '.app-analytics__header > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)'
+  const EXPORT_DROPDOWN = '.app-analytics__header > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > button:nth-child(1)'
   await page.click(EXPORT_DROPDOWN)
   await page.waitFor(2000);
   const EXPORT_HISTORY = ".Polaris-ActionList__Actions > li:nth-child(3) > a:nth-child(1)"
