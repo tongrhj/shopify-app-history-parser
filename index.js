@@ -79,7 +79,7 @@ const requestForEmail = async function () {
   const EXPORT_DROPDOWN = '[aria-owns=Popover1]'
   await page.click(EXPORT_DROPDOWN)
   await page.waitFor(2000);
-  const EXPORT_HISTORY = "#Popover1 [href="/36692/apps/19382/export_history"]"
+  const EXPORT_HISTORY = "#Popover1 [href='/36692/apps/19382/export_history']"
   await page.click(EXPORT_HISTORY) // Triggers a reload of page
   await page.waitForNavigation()
   console.log('Exporting History')
